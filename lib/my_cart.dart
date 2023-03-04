@@ -228,30 +228,6 @@ class My_cart extends StatelessWidget {
 
            const SizedBox(height: 40 ,),
 
-           // Center(
-           //   child: Padding(
-           //     padding: const EdgeInsets.all(18.0),
-           //     child: Container(
-           //       child: Center(
-           //         child: Text('Repeat Previous order',
-           //         style: TextStyle(
-           //           color: Colors.black,
-           //           fontWeight: FontWeight.bold,
-           //           fontSize: 20,
-           //         )),
-           //       ),
-           //       decoration: BoxDecoration
-           //         (color: Colors.black26,
-           //         borderRadius: BorderRadius.circular(20),
-           //
-           //       ),
-           //       padding: EdgeInsets.only(top: 100, right: 1),
-           //
-           //
-           //     ),
-           //   ),
-           // ),
-
            Center(
              child: Column(
                children: [

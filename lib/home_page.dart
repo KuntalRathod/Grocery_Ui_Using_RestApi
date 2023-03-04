@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:grocery_shop/intro_page.dart';
 import 'package:grocery_shop/my_cart.dart';
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -15,6 +18,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
+  List data = [];
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -22,7 +26,6 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: CurvedNavigationBar(
           backgroundColor: Colors.deepPurple,
       color: Colors.deepPurple.shade100,
-
 
       items:[
        InkWell
@@ -54,9 +57,7 @@ class _HomePageState extends State<HomePage> {
 
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-
               children: [
-
                 const Icon(Icons.location_on_outlined),
 
                 Container(
@@ -72,7 +73,6 @@ class _HomePageState extends State<HomePage> {
                   backgroundImage: AssetImage('images/person.png'),
                   backgroundColor: Colors.grey,
                 ),
-
               ],
             ),
 
@@ -122,156 +122,216 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             const SizedBox(height: 10 ,),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: 10),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.orange[100],
-                            ),
-                            child: Container(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children:[
-                                  Container(
-                                    child: Column(
-                                      children: [
-                                        Image.asset('images/Carrott.png',
-                                         height: 137 ,
-                                          width: 173,
 
-                              ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(bottom: 7,top: 5),
+            ////////////////Api data Display Here////////////////
 
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(15),
-                                              color: const Color(0xFFFFFFFF),
 
-                                            ),
-                                            child: const Padding(
-                                              padding: EdgeInsets.only(top: 8, bottom: 8 , right: 15 ,left: 15),
+            FutureBuilder<http.Response>(
+              builder: (context, snapshot) {
+                if(snapshot.hasData) {
+                  var data=jsonDecode(snapshot.data!.body.toString());
+                  return Container(
+                    height: 200.0,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: data.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                          width: 190.0,
+                          child: Card(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Image.network(data[index]["Image"].toString()),
+                                ListTile(
+                                  tileColor: Colors.purple.shade100,
+                                  title: Text(data[index]['Name'].toString()),
 
-                                              child: Text(
-                                                'Vegetables',
-                                                style: TextStyle(
-                                                  fontSize: 22,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                                  trailing: InkWell(
+                                    onTap: () {
+                                    // return deleteitem(id);
+                                    },
+                                    child: Icon(
+                                      Icons.delete,
+                                      color: Colors.red,
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.green[50],
-                            ),
-                            child: Container(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children:[
-                                  Container(
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Image.asset('images/avocado2.png',
-                                          height: 140 ,
-
-
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(bottom: 5,top: 0.1),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(15),
-                                              color: const Color(0xFFFFFFFF),
-
-                                            ),
-                                            child: const Padding(
-                                              padding: EdgeInsets.only(top: 10, bottom: 10 , right: 30 ,left: 30),
-                                              child: Text(
-                                                'Fruits',
-                                                style: TextStyle(
-                                                  fontSize: 22,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 10),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.pink[50],
-                            ),
-                            child: Container(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children:[
-                                  Container(
-                                    child: Column(
-                                      children: [
-                                        Image.asset('images/meat.png',
-                                          height: 139 ,
-                                          width: 175,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(bottom: 5,top: 5),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(15),
-                                              color: const Color(0xFFFFFFFF),
-
-                                            ),
-                                            child: const Padding(
-                                              padding: EdgeInsets.only(top: 10, bottom: 9 , right: 30 ,left: 30),
-                                              child: Text(
-                                                'Meat',
-                                                style: TextStyle(
-                                                  fontSize: 22,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+                        );
+                      },
                     ),
-                  ),
+                  );
+
+                  //   ListView.builder(
+                  //   // shrinkWrap: true,
+                  //   itemCount: jsonDecode(snapshot.data!.body.toString()).length,
+                  //   itemBuilder: (context, index) {
+                  //     return
+                  //       SingleChildScrollView(
+                  //         scrollDirection: Axis.horizontal,
+                  //         child: Row(
+                  //           children: [
+                  //             Padding(
+                  //               padding: EdgeInsets.only(left: 10),
+                  //               child: Container(
+                  //                 decoration: BoxDecoration(
+                  //                   borderRadius: BorderRadius.circular(20),
+                  //                   color: Colors.orange[100],
+                  //                 ),
+                  //                 child: Container(
+                  //                   child: Column(
+                  //                     crossAxisAlignment: CrossAxisAlignment.center,
+                  //                     children:[
+                  //                       Container(
+                  //                         child: Column(
+                  //                           children: [
+                  //                             Image.asset('images/Carrott.png',
+                  //                               height: 137 ,
+                  //                               width: 173,
+                  //
+                  //                             ),
+                  //                             Padding(
+                  //                               padding: const EdgeInsets.only(bottom: 7,top: 5),
+                  //
+                  //                               child: Container(
+                  //                                 decoration: BoxDecoration(
+                  //                                   borderRadius: BorderRadius.circular(15),
+                  //                                   color: const Color(0xFFFFFFFF),
+                  //
+                  //                                 ),
+                  //                                 child: const Padding(
+                  //                                   padding: EdgeInsets.only(top: 8, bottom: 8 , right: 15 ,left: 15),
+                  //
+                  //                                   child: Text(
+                  //                                     'Vegetables',
+                  //                                     style: TextStyle(
+                  //                                       fontSize: 22,
+                  //                                       fontWeight: FontWeight.bold,
+                  //                                     ),
+                  //                                   ),
+                  //                                 ),
+                  //                               ),
+                  //                             ),
+                  //                           ],
+                  //                         ),
+                  //                       ),
+                  //                     ],
+                  //                   ),
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //             Padding(
+                  //               padding: const EdgeInsets.only(left: 10),
+                  //               child: Container(
+                  //                 decoration: BoxDecoration(
+                  //                   borderRadius: BorderRadius.circular(20),
+                  //                   color: Colors.green[50],
+                  //                 ),
+                  //                 child: Container(
+                  //                   child: Column(
+                  //                     crossAxisAlignment: CrossAxisAlignment.center,
+                  //                     children:[
+                  //                       Container(
+                  //                         child: Column(
+                  //                           mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //                           children: [
+                  //                             Image.asset('images/avocado2.png',
+                  //                               height: 140 ,
+                  //
+                  //                             ),
+                  //                             Padding(
+                  //                               padding: const EdgeInsets.only(bottom: 5,top: 0.1),
+                  //                               child: Container(
+                  //                                 decoration: BoxDecoration(
+                  //                                   borderRadius: BorderRadius.circular(15),
+                  //                                   color: const Color(0xFFFFFFFF),
+                  //
+                  //                                 ),
+                  //                                 child: const Padding(
+                  //                                   padding: EdgeInsets.only(top: 10, bottom: 10 , right: 30 ,left: 30),
+                  //                                   child: Text(
+                  //                                     'Fruits',
+                  //                                     style: TextStyle(
+                  //                                       fontSize: 22,
+                  //                                       fontWeight: FontWeight.bold,
+                  //                                     ),
+                  //                                   ),
+                  //                                 ),
+                  //                               ),
+                  //                             ),
+                  //                           ],
+                  //                         ),
+                  //                       ),
+                  //                     ],
+                  //                   ),
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //             Padding(
+                  //               padding: EdgeInsets.only(left: 10),
+                  //               child: Container(
+                  //                 decoration: BoxDecoration(
+                  //                   borderRadius: BorderRadius.circular(20),
+                  //                   color: Colors.pink[50],
+                  //                 ),
+                  //                 child: Container(
+                  //                   child: Column(
+                  //                     crossAxisAlignment: CrossAxisAlignment.center,
+                  //                     children:[
+                  //                       Container(
+                  //                         child: Column(
+                  //                           children: [
+                  //                             Image.asset('images/meat.png',
+                  //                               height: 139 ,
+                  //                               width: 175,
+                  //                             ),
+                  //                             Padding(
+                  //                               padding: const EdgeInsets.only(bottom: 5,top: 5),
+                  //                               child: Container(
+                  //                                 decoration: BoxDecoration(
+                  //                                   borderRadius: BorderRadius.circular(15),
+                  //                                   color: const Color(0xFFFFFFFF),
+                  //
+                  //                                 ),
+                  //                                 child: const Padding(
+                  //                                   padding: EdgeInsets.only(top: 10, bottom: 9 , right: 30 ,left: 30),
+                  //                                   child: Text(
+                  //                                     'Meat',
+                  //                                     style: TextStyle(
+                  //                                       fontSize: 22,
+                  //                                       fontWeight: FontWeight.bold,
+                  //                                     ),
+                  //                                   ),
+                  //                                 ),
+                  //                               ),
+                  //                             ),
+                  //                           ],
+                  //                         ),
+                  //                       ),
+                  //                     ],
+                  //                   ),
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //           ],
+                  //         ),
+                  //       );
+                  //       //Container
+                  //     //   (child: Text((jsonDecode(snapshot.data!.body.toString())[5]['Name']).toString()),
+                  //     // );
+                  //   },
+                  // );
+                }
+                else {
+                  return  Center(child: CircularProgressIndicator(),);
+                }
+              },
+              future: getData(),
+            ),
+
 
             const SizedBox(height: 40 ,),
 
@@ -362,7 +422,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
 
-            ////////////Meat///////////
+            ///////////Meat//////////
 
             Container(
               child: ListTile(
@@ -391,11 +451,9 @@ class _HomePageState extends State<HomePage> {
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-
                         )),
                     Text("1 items"),
                   ],
-
                 ),
               ),
             ),
@@ -404,5 +462,30 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+  // Future<http.Response> getDataFromWebServer()  async {
+  //   var response = await http.get(Uri.parse('https://63f2faa7de3a0b242b382724.mockapi.io/Vegetables'));
+  //   print(response.body.toString());
+  //   return response;
+  // }
+  Future<http.Response> getData() async {
+    var response = await http.get(Uri.parse("https://63f2faa7de3a0b242b382724.mockapi.io/Vegetables"));
+   print(response.body.toString());
+    return response;
+  }
+  Future<void> deleteitem(id) async {
+    http.Response res = await http.delete(
+        Uri.parse('https://63f2faa7de3a0b242b382724.mockapi.io/Vegetables$id'));
+  }
+
+  // void showDeleteAlert(){
+  //   showDialog(context: context, builder: (context){
+  //     return AlertDialog(
+  //       title: Text('Alert'),
+  //       content: Text('Are you sure want to delete this item'),
+  //
+  //     );
+  //   });
+  //
+  // },
 
 }
